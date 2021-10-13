@@ -14,7 +14,7 @@ namespace MyProject.API.Controllers
 
         public DateTime userBirthdate { get; set; }
 
-        public User ToUser() => new User(Guid.NewGuid(), userName, userBirthdate, userEmail);
+        public User ToUser() => new User();
 
 
     }

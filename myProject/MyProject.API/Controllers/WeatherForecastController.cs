@@ -19,10 +19,10 @@ namespace MyProject.API.Controllers
 
         public EventsController(ILogger<EventsController> logger) => _logger = logger;
 
-        /*[HttpGet]
+        [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult Get(string titleStartsWith) => Ok(EventProvider.StaticEventList.FirstOrDefault(x => x.eventTitle.StartsWith(titleStartsWith ?? string.Empty, true, CultureInfo.InvariantCulture)));
-*/
+
         // get all events
         [HttpGet]
         /*[ProducesResponseType(StatusCodes.Status200OK)]
@@ -33,11 +33,11 @@ namespace MyProject.API.Controllers
 
         public IActionResult Get() => Ok(EventProvider.StaticEventList);
 
-        /*public IActionResult Get() =>
-            Ok(EventProvider.StaticEventList
-                .Select(ViewEvent.FromModel).ToList());
-        /*.Where(x => x.eventTitle.StartsWith(titleStartsWith ?? string.Empty, true, CultureInfo.InvariantCulture))
-        .ToList());*/
+        /* public IActionResult Get() =>
+             Ok(EventProvider.StaticEventList
+                 .Select(ViewEvent.FromModel).ToList());
+         .Where(x => x.eventTitle.StartsWith(titleStartsWith ?? string.Empty, true, CultureInfo.InvariantCulture))
+         .ToList());*/
 
         //get events by age
         [HttpGet("{eventage}")]
@@ -77,7 +77,7 @@ namespace MyProject.API.Controllers
             try
             {
                 _logger.LogInformation($"Cool, creating a new movie");
-                var createdEvent = Event.ToEvent();
+                var createdEvent = new Event();
                 return CreatedAtAction(nameof(GetById), new { id = createdEvent.Id.ToString() }, ViewEvent.FromModel(createdEvent));
             }
             catch (Exception ex)

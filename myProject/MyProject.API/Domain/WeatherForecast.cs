@@ -8,9 +8,9 @@ namespace MyProject.API.Domain
 {
     public class Event
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 
-        public Guid Id { get; }
+        public Guid Id { get; set; }
 
         public string eventTitle { get; set; }
 
@@ -20,25 +20,25 @@ namespace MyProject.API.Domain
 
         public int eventAge { get; set; }
 
-        public string[] eventParticpants { get; set; }
+        public string eventParticpants { get; set; }
 
         public int eventParticpantCount { get; set; }
 
 
 
-        public Event(Guid id, string eventtitle, DateTime eventdate, string eventdescription, int eventage, string[] eventparticipants)
-        {
+        /* public Event(Guid id, string eventtitle, DateTime eventdate, string eventdescription, int eventage, string[] eventparticipants)
+         {
 
 
-            Id = id;
-            eventTitle = eventtitle;
-            eventDate = eventdate;
-            eventDescription = eventdescription;
-            eventAge = eventage;
-            eventParticpants = eventparticipants;
+             Id = id;
+             eventTitle = eventtitle;
+             eventDate = eventdate;
+             eventDescription = eventdescription;
+             eventAge = eventage;
+             eventParticpants = eventparticipants;
 
-            eventParticpantCount = eventParticpants.Length;
-        }
+             eventParticpantCount = eventParticpants.Length;
+         }*/
 
     }
 
@@ -49,7 +49,7 @@ namespace MyProject.API.Domain
     public class User
     {
 
-        public Guid Id { get; }
+        public Guid Id { get; set; }
 
         public string userName { get; set; }
 
@@ -57,7 +57,7 @@ namespace MyProject.API.Domain
 
         public string userEmail { get; set; }
 
-        public User(Guid id, string username, DateTime userbirthdate, string useremail)
+        /*public User(Guid id, string username, DateTime userbirthdate, string useremail)
         {
 
 
@@ -66,7 +66,7 @@ namespace MyProject.API.Domain
             userBirthdate = userbirthdate;
             userEmail = useremail;
 
-        }
+        }*/
 
     }
 
