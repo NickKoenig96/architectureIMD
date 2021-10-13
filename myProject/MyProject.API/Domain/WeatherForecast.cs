@@ -1,12 +1,16 @@
 using System;
 using System.Text.Json.Serialization;
+using System.ComponentModel.DataAnnotations.Schema;
+
 
 
 namespace MyProject.API.Domain
 {
     public class Event
     {
-        public Guid Id { get; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+
+        public Guid? Id { get; }
 
         public string eventTitle { get; set; }
 

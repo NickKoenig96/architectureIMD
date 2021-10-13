@@ -22,7 +22,9 @@ namespace MyProject.API.Controllers
 
 
 
+        //public Event ToEvent() => new Event(Guid.NewGuid(), eventTitle, eventDate, eventDescription, eventAge, eventParticpants);
         public Event ToEvent() => new Event(Guid.NewGuid(), eventTitle, eventDate, eventDescription, eventAge, eventParticpants);
+
 
     }
 
