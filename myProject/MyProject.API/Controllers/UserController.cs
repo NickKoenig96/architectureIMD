@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using MyProject.API.Domain;
 
 
@@ -54,8 +55,11 @@ namespace MyProject.API.Controllers
             try
             {
                 _logger.LogInformation($"Cool, creating a new user");
-                var createdUser = new User(Guid.NewGuid(), user.userName, user.userBirthdate, user.userEmail);
-                return CreatedAtAction(nameof(GetById), new { id = createdUser.Id.ToString() }, createdUser);
+                /*var createdUser = new User(Guid.NewGuid(), user.userName, user.userBirthdate, user.userEmail);
+                return CreatedAtAction(nameof(GetById), new { id = createdUser.Id.ToString() }, createdUser);*/
+
+                var createduser = user.ToUser();
+                return CreatedAtAction(nameof(GetById), new { id = createduser.Id.ToString() }, ViewUser.FromModel(createduser));
 
             }
             catch (Exception ex)

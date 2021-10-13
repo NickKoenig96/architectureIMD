@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using MyProject.API.Domain;
 
 
@@ -24,14 +25,24 @@ namespace MyProject.API.Controllers
 */
         // get all events
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        /*[ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]*/
+
+        [ProducesResponseType(typeof(IEnumerable<ViewEvent>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
 
         public IActionResult Get() => Ok(EventProvider.StaticEventList);
 
+        /*public IActionResult Get() =>
+            Ok(EventProvider.StaticEventList
+                .Select(ViewEvent.FromModel).ToList());
+        /*.Where(x => x.eventTitle.StartsWith(titleStartsWith ?? string.Empty, true, CultureInfo.InvariantCulture))
+        .ToList());*/
+
         //get events by age
         [HttpGet("{eventage}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ViewEvent), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
         public IActionResult GetById(int eventage)
@@ -41,7 +52,9 @@ namespace MyProject.API.Controllers
                 var Event = EventProvider.StaticEventList.FirstOrDefault(x => x.eventAge == eventage);
                 if (Event != null)
                 {
-                    return Ok(Event);
+                    //return Ok(Event);
+                    return Ok(ViewEvent.FromModel(Event));
+
                 }
                 else
                 {
@@ -56,26 +69,25 @@ namespace MyProject.API.Controllers
 
 
         //werkt nog niet
-        /* [HttpPut("{id}")]
-         [ProducesResponseType(StatusCodes.Status200OK)]
-         [ProducesResponseType(StatusCodes.Status404NotFound)]
-         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(ViewEvent), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult CreateEvent(CreateEvent Event)
+        {
+            try
+            {
+                _logger.LogInformation($"Cool, creating a new movie");
+                var createdEvent = Event.ToEvent();
+                return CreatedAtAction(nameof(GetById), new { id = createdEvent.Id.ToString() }, ViewEvent.FromModel(createdEvent));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
-         public IActionResult CreateEvent(CreateEvent Event)
-         {
-             try
-             {
-                 _logger.LogInformation($"Cool, creating a new movie");
-                 var createdEvent = Event.ToEvent();
-                 return CreatedAtAction(nameof(GetById), new { id = createdEvent.Id.ToString() });
-             }
-             catch (Exception ex)
-             {
-                 return BadRequest(ex.Message);
-             }
 
 
-         }*/
     }
 
 
