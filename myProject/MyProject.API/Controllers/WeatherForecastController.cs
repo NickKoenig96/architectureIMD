@@ -19,25 +19,25 @@ namespace MyProject.API.Controllers
 
         public EventsController(ILogger<EventsController> logger) => _logger = logger;
 
-        [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public IActionResult Get(string titleStartsWith) => Ok(EventProvider.StaticEventList.FirstOrDefault(x => x.eventTitle.StartsWith(titleStartsWith ?? string.Empty, true, CultureInfo.InvariantCulture)));
-
+        /* [HttpGet]
+         [ProducesResponseType(StatusCodes.Status200OK)]
+         public IActionResult Get(string titleStartsWith) => Ok(EventProvider.StaticEventList.FirstOrDefault(x => x.eventTitle.StartsWith(titleStartsWith ?? string.Empty, true, CultureInfo.InvariantCulture)));
+ */
         // get all events
         [HttpGet]
-        /*[ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]*/
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
 
         [ProducesResponseType(typeof(IEnumerable<ViewEvent>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
 
         public IActionResult Get() => Ok(EventProvider.StaticEventList);
 
-        /* public IActionResult Get() =>
-             Ok(EventProvider.StaticEventList
-                 .Select(ViewEvent.FromModel).ToList());
-         .Where(x => x.eventTitle.StartsWith(titleStartsWith ?? string.Empty, true, CultureInfo.InvariantCulture))
-         .ToList());*/
+        // public IActionResult Get() =>
+        //      Ok(EventProvider.StaticEventList
+        //          .Select(ViewEvent.FromModel).ToList());
+        //  .Where(x => x.eventTitle.StartsWith(titleStartsWith ?? string.Empty, true, CultureInfo.InvariantCulture))
+        //  .ToList());
 
         //get events by age
         [HttpGet("{eventage}")]

@@ -7,7 +7,6 @@ namespace MyProject.API
     {
         public static User[] StaticEventList = new[] {
         new User(),
-        new User()
 
         };
     }
