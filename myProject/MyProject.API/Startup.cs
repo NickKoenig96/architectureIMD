@@ -11,6 +11,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
+using MyProject.API.Infra;
+using MyProject.API.Ports;
+
 
 namespace MyProject.API
 {
@@ -27,6 +31,9 @@ namespace MyProject.API
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddDbContext<EventContext>(options =>
+                               options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddTransient<IDatabase, SqliteDatabase>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

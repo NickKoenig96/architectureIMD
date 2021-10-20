@@ -14,7 +14,7 @@ namespace MyProject.API.Controllers
 
         public DateTime userBirthdate { get; set; }
 
-        public User ToUser() => new User();
+        public User ToUser() => new User { userName = this.userName, userBirthdate = this.userBirthdate, userEmail = this.userEmail };
 
 
     }

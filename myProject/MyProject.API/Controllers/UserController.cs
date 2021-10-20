@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using MyProject.API.Domain;
+using System.Threading.Tasks;
+using MyProject.API.Ports;
 
 
 
@@ -15,22 +17,29 @@ namespace MyProject.API.Controllers
     [Route("users")]
     public class UserController : ControllerBase
     {
+        private readonly IDatabase _database;
+
         private readonly ILogger<UserController> _logger;
 
-        public UserController(ILogger<UserController> logger) => _logger = logger;
+
+        public UserController(ILogger<UserController> logger, IDatabase database)
+        {
+            _database = database;
+            _logger = logger;
+        }
 
 
 
-        //get events by age
+        //get user by id
         [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ViewUser), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-        public IActionResult GetById(string id)
+        public async Task<IActionResult> GetById(string id)
         {
             try
             {
-                var User = EventProvider.StaticEventList.FirstOrDefault(x => x.Id == Guid.Parse(id));
+                var User = await _database.GetEventById(Guid.Parse(id));
                 if (User != null)
                 {
                     return Ok(User);
@@ -47,20 +56,17 @@ namespace MyProject.API.Controllers
         }
 
 
-        [HttpPost("register")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [HttpPost("/register")]
+        [ProducesResponseType(typeof(ViewUser), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult CreateUser(CreateUser user)
+        public async Task<IActionResult> PersistUser(CreateUser User)
         {
             try
             {
                 _logger.LogInformation($"Cool, creating a new user");
-                /*var createdUser = new User(Guid.NewGuid(), user.userName, user.userBirthdate, user.userEmail);
-                return CreatedAtAction(nameof(GetById), new { id = createdUser.Id.ToString() }, createdUser);*/
-
-                var createduser = user.ToUser();
-                return CreatedAtAction(nameof(GetById), new { id = createduser.Id.ToString() }, ViewUser.FromModel(createduser));
-
+                var createdUser = User.ToUser();
+                var persistedUser = await _database.PersistUser(createdUser);
+                return CreatedAtAction(nameof(GetById), new { id = createdUser.Id.ToString() }, ViewUser.FromModel(persistedUser));
             }
             catch (Exception ex)
             {

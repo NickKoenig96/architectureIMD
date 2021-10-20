@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using MyProject.API.Domain;
+using System.Threading.Tasks;
+using MyProject.API.Ports;
 
 
 
@@ -15,41 +17,42 @@ namespace MyProject.API.Controllers
     [Route("events")]
     public class EventsController : ControllerBase
     {
+
+        private readonly IDatabase _database;
+
         private readonly ILogger<EventsController> _logger;
 
-        public EventsController(ILogger<EventsController> logger) => _logger = logger;
 
-        /* [HttpGet]
-         [ProducesResponseType(StatusCodes.Status200OK)]
-         public IActionResult Get(string titleStartsWith) => Ok(EventProvider.StaticEventList.FirstOrDefault(x => x.eventTitle.StartsWith(titleStartsWith ?? string.Empty, true, CultureInfo.InvariantCulture)));
- */
+        public EventsController(ILogger<EventsController> logger, IDatabase database)
+        {
+            _database = database;
+            _logger = logger;
+        }
+        //public EventsController(ILogger<EventsController> logger) => _logger = logger;
+
+
         // get all events
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-
         [ProducesResponseType(typeof(IEnumerable<ViewEvent>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
 
-        public IActionResult Get() => Ok(EventProvider.StaticEventList);
+        // public async Task<IActionResult> Get() => Ok(EventProvider.StaticEventList);
 
-        // public IActionResult Get() =>
-        //      Ok(EventProvider.StaticEventList
-        //          .Select(ViewEvent.FromModel).ToList());
-        //  .Where(x => x.eventTitle.StartsWith(titleStartsWith ?? string.Empty, true, CultureInfo.InvariantCulture))
-        //  .ToList());
+        public async Task<IActionResult> Get() =>
+            Ok((await _database.GetAllEvents())
+                .Select(ViewEvent.FromModel).ToList());
+
 
         //get events by age
-        [HttpGet("{eventage}")]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
+        [HttpGet("age/{eventage}")]
         [ProducesResponseType(typeof(ViewEvent), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-        public IActionResult GetById(int eventage)
+        public async Task<IActionResult> GetByAge(int eventage)
         {
             try
             {
-                var Event = EventProvider.StaticEventList.FirstOrDefault(x => x.eventAge == eventage);
+                var Event = await _database.GetEventByAge(eventage);
                 if (Event != null)
                 {
                     //return Ok(Event);
@@ -68,20 +71,67 @@ namespace MyProject.API.Controllers
         }
 
 
-        //werkt nog niet
-        [HttpPut("{id}")]
-        [ProducesResponseType(typeof(ViewEvent), StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult CreateEvent(CreateEvent Event)
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(ViewEvent), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetById(string id)
         {
             try
             {
-                _logger.LogInformation($"Cool, creating a new movie");
-                var createdEvent = new Event();
-                return CreatedAtAction(nameof(GetById), new { id = createdEvent.Id.ToString() }, ViewEvent.FromModel(createdEvent));
+                var Event = await _database.GetEventById(Guid.Parse(id));
+                if (Event != null)
+                {
+                    return Ok(ViewEvent.FromModel(Event));
+                }
+                else
+                {
+                    return NotFound();
+                }
             }
             catch (Exception ex)
             {
+                // This is just good practice; you never want to expose a raw exception message. There are some libraries/services to handle this
+                // but it's better to take full control of your code.
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        /* [HttpPost()]
+         [ProducesResponseType(typeof(ViewEvent), StatusCodes.Status201Created)]
+         [ProducesResponseType(StatusCodes.Status201Created)]
+         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+         public async Task<IActionResult> PersistEvent(CreateEvent User)
+         {
+             try
+             {
+                 _logger.LogInformation($"Cool, creating a new user");
+                 var createdEvent = User.ToEvent();
+                 var persistedEvent = await _database.PersistEvent(createdEvent);
+                 return CreatedAtAction(nameof(GetById), new { id = createdEvent.Id.ToString() }, ViewEvent.FromModel(persistedEvent));
+             }
+             catch (Exception ex)
+             {
+                 return BadRequest(ex.Message);
+             }
+         }*/
+
+        //werkt nog niet
+        [HttpPut("/edit")]
+        [ProducesResponseType(typeof(CreateEvent), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> PersistEvent(CreateEvent Event)
+        {
+            try
+            {
+                var createdEvent = Event.ToEvent();
+                var persistedEvent = await _database.PersistEvent(createdEvent);
+                return CreatedAtAction(nameof(GetById), new { id = createdEvent.Id.ToString() }, ViewEvent.FromModel(persistedEvent));
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Got an error for {nameof(PersistEvent)}");
                 return BadRequest(ex.Message);
             }
         }

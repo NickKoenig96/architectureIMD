@@ -1,6 +1,6 @@
 using System;
-using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 
 
@@ -8,9 +8,9 @@ namespace MyProject.API.Domain
 {
     public class Event
     {
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
 
         public string eventTitle { get; set; }
 
@@ -20,26 +20,23 @@ namespace MyProject.API.Domain
 
         public int eventAge { get; set; }
 
-        public string eventParticpants { get; set; }
+        public string eventParticipants { get; set; }
 
         public int eventParticpantCount { get; set; }
 
 
 
-        /* public Event(Guid id, string eventtitle, DateTime eventdate, string eventdescription, int eventage, string[] eventparticipants)
-         {
+        // public Event(Guid id, string eventtitle, DateTime eventdate, string eventdescription, int eventage, string[] eventparticipants)
+        // {
+        //     Id = id;
+        //     eventTitle = eventtitle;
+        //     eventDate = eventdate;
+        //     eventDescription = eventdescription;
+        //     eventAge = eventage;
+        //     eventParticpants = eventparticipants;
 
-
-             Id = id;
-             eventTitle = eventtitle;
-             eventDate = eventdate;
-             eventDescription = eventdescription;
-             eventAge = eventage;
-             eventParticpants = eventparticipants;
-
-             eventParticpantCount = eventParticpants.Length;
-         }*/
-
+        //     eventParticpantCount = eventParticpants.Length;
+        // }
     }
 
 
@@ -48,25 +45,27 @@ namespace MyProject.API.Domain
 
     public class User
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
 
         public string userName { get; set; }
 
-        public DateTime userBirthdate { get; set; }
-
         public string userEmail { get; set; }
 
-        /*public User(Guid id, string username, DateTime userbirthdate, string useremail)
-        {
+        public DateTime userBirthdate { get; set; }
 
 
-            Id = id;
-            userName = username;
-            userBirthdate = userbirthdate;
-            userEmail = useremail;
+        // public User(Guid id, string username, DateTime userbirthdate, string useremail)
+        // {
 
-        }*/
+
+        //     Id = id;
+        //     userName = username;
+        //     userBirthdate = userbirthdate;
+        //     userEmail = useremail;
+
+        // }
 
     }
 

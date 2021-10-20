@@ -9,7 +9,6 @@ namespace MyProject.API.Controllers
     public class CreateEvent
     {
 
-
         public string eventTitle { get; set; }
 
         public DateTime eventDate { get; set; }
@@ -18,11 +17,15 @@ namespace MyProject.API.Controllers
 
         public int eventAge { get; set; }
 
-        public string[] eventParticpants { get; set; }
+        public string eventParctipants { get; set; }
+
+        public int eventParticpantCount { get; set; }
 
 
 
         //public Event ToEvent() => new Event(Guid.NewGuid(), eventTitle, eventDate, eventDescription, eventAge, eventParticpants);
+
+        public Event ToEvent() => new Event { eventTitle = this.eventTitle, eventDate = this.eventDate, eventDescription = this.eventDescription, eventAge = this.eventAge, eventParticipants = this.eventParctipants, eventParticpantCount = 7 };
 
     }
 
