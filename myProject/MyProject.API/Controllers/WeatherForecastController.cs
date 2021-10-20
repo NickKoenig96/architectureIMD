@@ -45,18 +45,19 @@ namespace MyProject.API.Controllers
 
         //get events by age
         [HttpGet("age/{eventage}")]
-        [ProducesResponseType(typeof(ViewEvent), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<ViewEvent>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
         public async Task<IActionResult> GetByAge(int eventage)
         {
             try
             {
-                var Event = await _database.GetEventByAge(eventage);
+                var Event = await _database.GetByAge(eventage);
                 if (Event != null)
                 {
                     //return Ok(Event);
-                    return Ok(ViewEvent.FromModel(Event));
+                    return Ok(Event);
+                    //return Ok(ViewEvent.FromModel(Event));
 
                 }
                 else
@@ -117,21 +118,40 @@ namespace MyProject.API.Controllers
          }*/
 
         //werkt nog niet
-        [HttpPut("/edit")]
-        [ProducesResponseType(typeof(CreateEvent), StatusCodes.Status201Created)]
+        /* [HttpPut("/edit")]
+         [ProducesResponseType(typeof(CreateEvent), StatusCodes.Status201Created)]
+         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+         public async Task<IActionResult> PersistEvent(CreateEvent Event)
+         {
+             try
+             {
+                 var createdEvent = Event.ToEvent();
+                 var persistedEvent = await _database.PersistEvent(createdEvent);
+                 return CreatedAtAction(nameof(GetById), new { id = createdEvent.Id.ToString() }, ViewEvent.FromModel(persistedEvent));
+
+             }
+             catch (Exception ex)
+             {
+                 _logger.LogError(ex, $"Got an error for {nameof(PersistEvent)}");
+                 return BadRequest(ex.Message);
+             }
+         }*/
+
+
+        [HttpPost("/make")]
+        [ProducesResponseType(typeof(ViewEvent), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> PersistEvent(CreateEvent Event)
         {
             try
             {
+                _logger.LogInformation($"Cool, creating a new event");
                 var createdEvent = Event.ToEvent();
                 var persistedEvent = await _database.PersistEvent(createdEvent);
                 return CreatedAtAction(nameof(GetById), new { id = createdEvent.Id.ToString() }, ViewEvent.FromModel(persistedEvent));
-
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Got an error for {nameof(PersistEvent)}");
                 return BadRequest(ex.Message);
             }
         }

@@ -38,9 +38,13 @@ namespace MyProject.API.Infra
             return Array.AsReadOnly(events);
         }
 
-        public async Task<Event> GetEventByAge(int eventage)
+
+
+        public async Task<ReadOnlyCollection<Event>> GetByAge(int eventage)
         {
-            return await _context.Event.FindAsync(eventage);
+            var events = await _context.Event.Where(x => x.eventAge == eventage).ToArrayAsync();
+            return Array.AsReadOnly(events);
+
         }
 
 
@@ -75,6 +79,12 @@ namespace MyProject.API.Infra
             }
             await _context.SaveChangesAsync();
             return User;
+        }
+
+        public async Task<ReadOnlyCollection<User>> GetAllUsers()
+        {
+            var users = await _context.User.ToArrayAsync();
+            return Array.AsReadOnly(users);
         }
     }
 }

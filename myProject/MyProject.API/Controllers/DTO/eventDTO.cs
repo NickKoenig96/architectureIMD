@@ -48,7 +48,9 @@ namespace MyProject.API.Controllers
         {
             Id = Event.Id.ToString(),
             eventTitle = Event.eventTitle,
-            eventDate = Event.eventDate
+            eventDate = Event.eventDate,
+            eventDescription = Event.eventDescription,
+            eventAge = Event.eventAge
         };
 
 

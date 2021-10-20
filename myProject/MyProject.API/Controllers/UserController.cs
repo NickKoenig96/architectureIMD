@@ -28,6 +28,17 @@ namespace MyProject.API.Controllers
             _logger = logger;
         }
 
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<ViewUser>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+
+        // public async Task<IActionResult> Get() => Ok(EventProvider.StaticEventList);
+
+        public async Task<IActionResult> Get() =>
+           Ok((await _database.GetAllUsers())
+               .Select(ViewUser.FromModel).ToList());
+
+
 
 
         //get user by id
