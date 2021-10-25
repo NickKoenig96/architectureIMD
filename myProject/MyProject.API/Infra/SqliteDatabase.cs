@@ -67,6 +67,20 @@ namespace MyProject.API.Infra
             return Event;
         }
 
+        public async Task<Event> EditEvent(Event Event)
+        {
+            if (Event.Id == null)
+            {
+                await _context.Event.AddAsync(Event);
+            }
+            else
+            {
+                _context.Event.Update(Event);
+            }
+            await _context.SaveChangesAsync();
+            return Event;
+        }
+
         public async Task<User> PersistUser(User User)
         {
             if (User.Id == null)

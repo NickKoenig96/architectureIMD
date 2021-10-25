@@ -17,6 +17,9 @@ namespace MyProject.API.Ports
 
         Task<Event> PersistEvent(Event Event);
 
+        Task<Event> EditEvent(Event Event);
+
+
         Task<User> PersistUser(User User);
 
         // Task DeleteMovie(Guid parsedId);

@@ -28,7 +28,6 @@ namespace MyProject.API.Controllers
             _database = database;
             _logger = logger;
         }
-        //public EventsController(ILogger<EventsController> logger) => _logger = logger;
 
 
         // get all events
@@ -36,15 +35,13 @@ namespace MyProject.API.Controllers
         [ProducesResponseType(typeof(IEnumerable<ViewEvent>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
 
-        // public async Task<IActionResult> Get() => Ok(EventProvider.StaticEventList);
-
         public async Task<IActionResult> Get() =>
             Ok((await _database.GetAllEvents())
                 .Select(ViewEvent.FromModel).ToList());
 
 
         //get events by age
-        [HttpGet("age/{eventage}")]
+        [HttpGet("{eventage}")]
         [ProducesResponseType(typeof(IEnumerable<ViewEvent>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
@@ -55,7 +52,6 @@ namespace MyProject.API.Controllers
                 var Event = await _database.GetByAge(eventage);
                 if (Event != null)
                 {
-                    //return Ok(Event);
                     return Ok(Event);
                     //return Ok(ViewEvent.FromModel(Event));
 
@@ -72,6 +68,7 @@ namespace MyProject.API.Controllers
         }
 
 
+        //get user by id
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ViewEvent), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -98,47 +95,31 @@ namespace MyProject.API.Controllers
         }
 
 
-        /* [HttpPost()]
-         [ProducesResponseType(typeof(ViewEvent), StatusCodes.Status201Created)]
-         [ProducesResponseType(StatusCodes.Status201Created)]
-         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-         public async Task<IActionResult> PersistEvent(CreateEvent User)
-         {
-             try
-             {
-                 _logger.LogInformation($"Cool, creating a new user");
-                 var createdEvent = User.ToEvent();
-                 var persistedEvent = await _database.PersistEvent(createdEvent);
-                 return CreatedAtAction(nameof(GetById), new { id = createdEvent.Id.ToString() }, ViewEvent.FromModel(persistedEvent));
-             }
-             catch (Exception ex)
-             {
-                 return BadRequest(ex.Message);
-             }
-         }*/
+        //werkt nog niet. zet momenteel een nieuw event in de db
+        //edit event
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(ViewEvent), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> EditEvent(CreateEvent Event)
+        {
+            try
+            {
+                var UpdatedEvent = Event.ToEvent();
+                var EditedEvent = await _database.EditEvent(UpdatedEvent);
+                return CreatedAtAction(nameof(GetById), new { id = UpdatedEvent.Id.ToString() }, ViewEvent.FromModel(EditedEvent));
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Got an error for {nameof(EditEvent)}");
+                return BadRequest(ex.Message);
+            }
+        }
+
 
         //werkt nog niet
-        /* [HttpPut("/edit")]
-         [ProducesResponseType(typeof(CreateEvent), StatusCodes.Status201Created)]
-         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-         public async Task<IActionResult> PersistEvent(CreateEvent Event)
-         {
-             try
-             {
-                 var createdEvent = Event.ToEvent();
-                 var persistedEvent = await _database.PersistEvent(createdEvent);
-                 return CreatedAtAction(nameof(GetById), new { id = createdEvent.Id.ToString() }, ViewEvent.FromModel(persistedEvent));
-
-             }
-             catch (Exception ex)
-             {
-                 _logger.LogError(ex, $"Got an error for {nameof(PersistEvent)}");
-                 return BadRequest(ex.Message);
-             }
-         }*/
-
-
-        [HttpPost("/make")]
+        //create event
+        [HttpPost("/create/event")]
         [ProducesResponseType(typeof(ViewEvent), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> PersistEvent(CreateEvent Event)
@@ -149,6 +130,65 @@ namespace MyProject.API.Controllers
                 var createdEvent = Event.ToEvent();
                 var persistedEvent = await _database.PersistEvent(createdEvent);
                 return CreatedAtAction(nameof(GetById), new { id = createdEvent.Id.ToString() }, ViewEvent.FromModel(persistedEvent));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        //werkt nog niet
+        //enroll user in event
+        [HttpPost("{eventTitle}/enroll/{username}")]
+        [ProducesResponseType(typeof(ViewEvent), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> EnrollEvent(CreateEvent Event)
+        {
+            try
+            {
+                _logger.LogInformation($"user enrolled");
+
+                return Ok("user enrolled");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        //werkt nog niet
+        //unenroll user in event
+        [HttpDelete("{eventTitle}/unenroll/{username}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UnenrollEvent(string eventTitle)
+        {
+            try
+            {
+                _logger.LogInformation($"user unenrolled");
+
+                return Ok("user unenrolled");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        //werkt nog niet
+        //unenroll user in event
+        [HttpDelete("{eventTitle}/remove/{username}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> RemoveUser(string eventTitle)
+        {
+            try
+            {
+                _logger.LogInformation($"user unenrolled");
+
+                return Ok("user unenrolled");
             }
             catch (Exception ex)
             {
