@@ -15,9 +15,13 @@ namespace MyProject.API.Ports
 
         Task<Event> GetEventById(Guid id);
 
+        Task<Event> GetEvent(Guid id);
+
+        Task<User> GetUserById(Guid id);
+
         Task<Event> PersistEvent(Event Event);
 
-        Task<Event> EditEvent(Event Event);
+        Task<Event> UpdateEvent(Event Event);
 
 
         Task<User> PersistUser(User User);

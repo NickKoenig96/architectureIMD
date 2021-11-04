@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MyProject.API.Domain;
 using MyProject.API.Ports;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace MyProject.API.Infra
@@ -53,6 +54,17 @@ namespace MyProject.API.Infra
             return await _context.Event.FindAsync(id);
         }
 
+        public async Task<Event> GetEvent(Guid id)
+        {
+            return await _context.Event.FindAsync(id);
+        }
+
+        public async Task<User> GetUserById(Guid id)
+        {
+            return await _context.User.FindAsync(id);
+        }
+
+
         public async Task<Event> PersistEvent(Event Event)
         {
             if (Event.Id == null)
@@ -67,8 +79,9 @@ namespace MyProject.API.Infra
             return Event;
         }
 
-        public async Task<Event> EditEvent(Event Event)
+        public async Task<Event> UpdateEvent(Event Event)
         {
+
             if (Event.Id == null)
             {
                 await _context.Event.AddAsync(Event);

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using MyProject.API.Domain;
 using System.Threading.Tasks;
 using MyProject.API.Ports;
+using Microsoft.EntityFrameworkCore;
 
 
 
@@ -41,7 +42,7 @@ namespace MyProject.API.Controllers
 
 
         //get events by age
-        [HttpGet("{eventage}")]
+        [HttpGet("/age/{eventage}")]
         [ProducesResponseType(typeof(IEnumerable<ViewEvent>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
@@ -97,24 +98,56 @@ namespace MyProject.API.Controllers
 
         //werkt nog niet. zet momenteel een nieuw event in de db
         //edit event
+        /* [HttpPut("{id}")]
+         [ProducesResponseType(typeof(ViewEvent), StatusCodes.Status201Created)]
+         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+         public async Task<IActionResult> EditEvent(CreateEvent Event)
+         {
+
+             try
+             {
+                 var EditedEvent = Event.ToEvent();
+                 var UpdateEvent = await _database.PersistEvent(EditedEvent);
+                 return CreatedAtAction(nameof(GetById), new { id = EditedEvent.Id.ToString() }, ViewEvent.FromModel(UpdateEvent));
+             }
+             catch (Exception ex)
+             {
+                 return BadRequest(ex.Message);
+             }
+         }*/
+
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(ViewEvent), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> EditEvent(CreateEvent Event)
+        public async Task<ActionResult<Event>> UpdateEvent(string id, Event Event)
         {
             try
             {
-                var UpdatedEvent = Event.ToEvent();
-                var EditedEvent = await _database.EditEvent(UpdatedEvent);
-                return CreatedAtAction(nameof(GetById), new { id = UpdatedEvent.Id.ToString() }, ViewEvent.FromModel(EditedEvent));
+                /*if (id != Event.Id)
+                    return BadRequest("Event ID mismatch");*/
 
+                var eventToUpdate = await _database.GetEvent(Guid.Parse(id));
+
+                if (eventToUpdate == null)
+                    return NotFound($"Event with Id = {id} not found");
+                else
+                {
+                    return Ok(ViewEvent.FromModel(Event));
+                }
+
+
+                var editedEvent = await _database.UpdateEvent(Event);
+
+                //return CreatedAtAction(nameof(GetById), new { id = eventToUpdate.Id.ToString() }, ViewEvent.FromModel(editedEvent));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                _logger.LogError(ex, $"Got an error for {nameof(EditEvent)}");
-                return BadRequest(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Error updating data");
             }
         }
+
+
 
 
         //werkt nog niet

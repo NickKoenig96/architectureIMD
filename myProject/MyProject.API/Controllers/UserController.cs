@@ -44,11 +44,11 @@ namespace MyProject.API.Controllers
         [ProducesResponseType(typeof(ViewUser), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-        public async Task<IActionResult> GetById(string id)
+        public async Task<IActionResult> GetUserById(string id)
         {
             try
             {
-                var User = await _database.GetEventById(Guid.Parse(id));
+                var User = await _database.GetUserById(Guid.Parse(id));
                 if (User != null)
                 {
                     return Ok(User);
@@ -76,7 +76,7 @@ namespace MyProject.API.Controllers
                 _logger.LogInformation($"Cool, creating a new user");
                 var createdUser = User.ToUser();
                 var persistedUser = await _database.PersistUser(createdUser);
-                return CreatedAtAction(nameof(GetById), new { id = createdUser.Id.ToString() }, ViewUser.FromModel(persistedUser));
+                return CreatedAtAction(nameof(GetUserById), new { id = createdUser.Id.ToString() }, ViewUser.FromModel(persistedUser));
             }
             catch (Exception ex)
             {
