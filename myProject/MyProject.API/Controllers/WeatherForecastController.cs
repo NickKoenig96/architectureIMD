@@ -96,61 +96,29 @@ namespace MyProject.API.Controllers
         }
 
 
-        //werkt nog niet. zet momenteel een nieuw event in de db
-        //edit event
-        /* [HttpPut("{id}")]
-         [ProducesResponseType(typeof(ViewEvent), StatusCodes.Status201Created)]
-         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-         public async Task<IActionResult> EditEvent(CreateEvent Event)
-         {
 
-             try
-             {
-                 var EditedEvent = Event.ToEvent();
-                 var UpdateEvent = await _database.PersistEvent(EditedEvent);
-                 return CreatedAtAction(nameof(GetById), new { id = EditedEvent.Id.ToString() }, ViewEvent.FromModel(UpdateEvent));
-             }
-             catch (Exception ex)
-             {
-                 return BadRequest(ex.Message);
-             }
-         }*/
 
-        [HttpPut("{id}")]
+        [HttpPut()]
         [ProducesResponseType(typeof(ViewEvent), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Event>> UpdateEvent(string id, Event Event)
+        public async Task<ActionResult<Event>> UpdateEvent(UpdateEvent Event)
         {
             try
             {
-                /*if (id != Event.Id)
-                    return BadRequest("Event ID mismatch");*/
-
-                var eventToUpdate = await _database.GetEvent(Guid.Parse(id));
-
-                if (eventToUpdate == null)
-                    return NotFound($"Event with Id = {id} not found");
-                else
-                {
-                    return Ok(ViewEvent.FromModel(Event));
-                }
-
-
-                var editedEvent = await _database.UpdateEvent(Event);
-
-                //return CreatedAtAction(nameof(GetById), new { id = eventToUpdate.Id.ToString() }, ViewEvent.FromModel(editedEvent));
+                var createdEvent = Event.ToEvent();
+                var persistedEvent = await _database.UpdateEvent(createdEvent);
+                return CreatedAtAction(nameof(GetById), new { id = createdEvent.Id.ToString() }, ViewEvent.FromModel(persistedEvent));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,
-                    "Error updating data");
+                _logger.LogError(ex, $"Got an error for {nameof(UpdateEvent)}");
+                return BadRequest(ex.Message);
             }
         }
 
 
 
 
-        //werkt nog niet
         //create event
         [HttpPost("/create/event")]
         [ProducesResponseType(typeof(ViewEvent), StatusCodes.Status201Created)]

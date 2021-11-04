@@ -29,6 +29,31 @@ namespace MyProject.API.Controllers
 
     }
 
+
+    public class UpdateEvent
+    {
+
+        public Guid? Id { get; set; }
+
+        public string eventTitle { get; set; }
+
+        public DateTime eventDate { get; set; }
+
+        public string eventDescription { get; set; }
+
+        public int eventAge { get; set; }
+
+        public string eventParctipants { get; set; }
+
+        public int eventParticpantCount { get; set; }
+
+
+
+
+        public Event ToEvent() => new Event { Id = this.Id, eventTitle = this.eventTitle, eventDate = this.eventDate, eventDescription = this.eventDescription, eventAge = this.eventAge, eventParticipants = this.eventParctipants, eventParticpantCount = 7 };
+
+    }
+
     public class ViewEvent
     {
 
