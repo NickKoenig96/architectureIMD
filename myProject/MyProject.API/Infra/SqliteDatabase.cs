@@ -18,12 +18,12 @@ namespace MyProject.API.Infra
         {
             _context = context;
         }
-        /* public async Task DeleteMovie(Guid parsedId)
-         {
-             var movie = await _context.Movies.FindAsync(parsedId);
-             _context.Movies.Remove(movie);
-             await _context.SaveChangesAsync();
-         }*/
+        public async Task DeleteUser(Guid parsedId)
+        {
+            var movie = await _context.User.FindAsync(parsedId);
+            _context.User.Remove(movie);
+            await _context.SaveChangesAsync();
+        }
 
         /*   public async Task<ReadOnlyCollection<Movie>> GetAllMovies(string titleStartsWith)
          {

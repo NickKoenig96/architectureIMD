@@ -97,7 +97,7 @@ namespace MyProject.API.Controllers
 
 
 
-
+        //edit and event
         [HttpPut()]
         [ProducesResponseType(typeof(ViewEvent), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -178,24 +178,6 @@ namespace MyProject.API.Controllers
             }
         }
 
-        //werkt nog niet
-        //unenroll user in event
-        [HttpDelete("{eventTitle}/remove/{username}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> RemoveUser(string eventTitle)
-        {
-            try
-            {
-                _logger.LogInformation($"user unenrolled");
-
-                return Ok("user unenrolled");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
 
 
 

@@ -85,6 +85,35 @@ namespace MyProject.API.Controllers
         }
 
 
+        //delete user
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> RemoveUser(string id)
+        {
+            try
+            {
+                var parsedId = Guid.Parse(id);
+                var movie = await _database.GetUserById(parsedId);
+                if (movie != null)
+                {
+                    await _database.DeleteUser(parsedId);
+                    return NoContent();
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Got an error for {nameof(RemoveUser)}");
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
     }
 }
 

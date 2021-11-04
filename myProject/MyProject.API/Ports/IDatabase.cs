@@ -26,6 +26,6 @@ namespace MyProject.API.Ports
 
         Task<User> PersistUser(User User);
 
-        // Task DeleteMovie(Guid parsedId);
+        Task DeleteUser(Guid parsedId);
     }
 }

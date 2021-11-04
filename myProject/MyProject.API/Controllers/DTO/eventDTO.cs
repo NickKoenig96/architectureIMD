@@ -67,6 +67,9 @@ namespace MyProject.API.Controllers
 
         public int eventAge { get; set; }
 
+        public int eventParticpantCount { get; set; }
+
+
         public string[] eventParticpants { get; set; }
 
         public static ViewEvent FromModel(Event Event) => new ViewEvent
@@ -75,6 +78,7 @@ namespace MyProject.API.Controllers
             eventTitle = Event.eventTitle,
             eventDate = Event.eventDate,
             eventDescription = Event.eventDescription,
+            eventParticpantCount = 100,
             eventAge = Event.eventAge
         };
 
