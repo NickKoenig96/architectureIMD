@@ -8,6 +8,13 @@ using MyProject.API.Domain;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Snapshooter.Xunit;
+
+
+
+
 namespace MyProject.Tests.UnitTests
 {
     // Only partially tests the controller; the other endpoints are more of a reader's exercise. PR's welcome.
@@ -60,5 +67,41 @@ namespace MyProject.Tests.UnitTests
             _mockedDatabase.VerifyAll();
         }
 
+
+        [Fact]
+        public async Task TestGetById_DoesntExist()
+        {
+            // arrange
+            var ourId = Guid.NewGuid();
+            var ourEvent = new Event { Id = ourId, eventTitle = "yes", eventDate = DateTime.Now, eventDescription = "event description 1", eventAge = 16, eventParticipants = "jef,jan,...", eventParticpantCount = 7 };
+            _mockedDatabase.Setup(x => x.GetEventById(ourId)).Returns(Task.FromResult(null as Event));
+
+            // act
+            var controller = new EventsController(_mockedLogger.Object, _mockedDatabase.Object);
+
+            // assert
+            var result = await new EventsController(_mockedLogger.Object, _mockedDatabase.Object).GetById(ourId.ToString());
+            Assert.IsType<NotFoundResult>(result);
+
+            _mockedLogger.VerifyAll();
+            _mockedDatabase.VerifyAll();
+        }
+
+        [Fact]
+        public async Task TestGetById_ErrorOnRetrievalAsync()
+        {
+            // arrange
+            var ourId = Guid.NewGuid();
+            var ourEvent = new Event { Id = ourId, eventTitle = "yees", eventDate = DateTime.Now, eventDescription = "event description 1", eventAge = 16, eventParticipants = "jef,jan,...", eventParticpantCount = 7 };
+            _mockedDatabase.Setup(x => x.GetEventById(ourId)).ThrowsAsync(new Exception("drama"));
+
+            // act
+            var result = await new EventsController(_mockedLogger.Object, _mockedDatabase.Object).GetById(ourId.ToString());
+
+            // assert
+            Assert.IsType<BadRequestObjectResult>(result);
+            _mockedLogger.VerifyAll();
+            _mockedDatabase.VerifyAll();
+        }
     }
 }

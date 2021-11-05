@@ -36,7 +36,7 @@ namespace MyProject.API.Controllers
         [ProducesResponseType(typeof(IEnumerable<ViewEvent>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
 
-        public async Task<IActionResult> Get() =>
+        public async Task<IActionResult> GetAllEvents() =>
             Ok((await _database.GetAllEvents())
                 .Select(ViewEvent.FromModel).ToList());
 

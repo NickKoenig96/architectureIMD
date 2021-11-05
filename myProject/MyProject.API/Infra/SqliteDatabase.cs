@@ -20,8 +20,8 @@ namespace MyProject.API.Infra
         }
         public async Task DeleteUser(Guid parsedId)
         {
-            var movie = await _context.User.FindAsync(parsedId);
-            _context.User.Remove(movie);
+            var user = await _context.User.FindAsync(parsedId);
+            _context.User.Remove(user);
             await _context.SaveChangesAsync();
         }
 
