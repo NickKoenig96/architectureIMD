@@ -26,7 +26,8 @@ We are responsible for the creation, and later maintenance of the **API** of a g
 
  1. On overview page show event description (first 1000 characters) → **detail to fix later**
  2. The user gets a button to enroll for the event when he/she is not enrolled yet. After he/she is enrolled, the button changes to a cancel button. → **Need to figure out how to use foreign keys**
- 3. When the age range is not filled in, it's an all-ages event and everyone sees the event in their list. → **detail to fix later**
+ 3.  On overview page show event paticipation count → **Need working foreign keys for this**
+ 4. When the age range is not filled in, it's an all-ages event and everyone sees the event in their list. → **detail to fix later**
  
 **Question:** An administrator can remove a person from an event = After he/she is enrolled, the button changes to a cancel button? (same route?)
 
