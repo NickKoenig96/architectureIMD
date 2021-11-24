@@ -141,7 +141,7 @@ namespace MyProject.API.Controllers
 
         //werkt nog niet
         //enroll user in event
-        [HttpPost("{eventTitle}/enroll/{username}")]
+        [HttpPost("{eventTitle}/enroll/{user_id}")]
         [ProducesResponseType(typeof(ViewEvent), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> EnrollEvent(CreateEvent Event)
@@ -161,7 +161,7 @@ namespace MyProject.API.Controllers
 
         //werkt nog niet
         //unenroll user in event
-        [HttpDelete("{eventTitle}/unenroll/{username}")]
+        [HttpDelete("{eventTitle}/unenroll/{user_id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UnenrollEvent(string eventTitle)
