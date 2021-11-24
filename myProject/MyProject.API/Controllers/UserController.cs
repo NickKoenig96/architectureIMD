@@ -69,12 +69,12 @@ namespace MyProject.API.Controllers
         [HttpPost("/create/user")]
         [ProducesResponseType(typeof(ViewUser), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> PersistUser(CreateUser User)
+        public async Task<IActionResult> PersistUser(CreateUser user)
         {
             try
             {
                 _logger.LogInformation($"Cool, creating a new user");
-                var createdUser = User.ToUser();
+                var createdUser = user.ToUser();
                 var persistedUser = await _database.PersistUser(createdUser);
                 return CreatedAtAction(nameof(GetUserById), new { id = createdUser.Id.ToString() }, ViewUser.FromModel(persistedUser));
             }

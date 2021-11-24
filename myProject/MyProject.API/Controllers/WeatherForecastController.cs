@@ -101,11 +101,11 @@ namespace MyProject.API.Controllers
         [HttpPut()]
         [ProducesResponseType(typeof(ViewEvent), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Event>> UpdateEvent(UpdateEvent Event)
+        public async Task<ActionResult<Event>> UpdateEvent(UpdateEvent event_)
         {
             try
             {
-                var createdEvent = Event.ToEvent();
+                var createdEvent = event_.ToEvent();
                 var persistedEvent = await _database.UpdateEvent(createdEvent);
                 return CreatedAtAction(nameof(GetById), new { id = createdEvent.Id.ToString() }, ViewEvent.FromModel(persistedEvent));
             }
