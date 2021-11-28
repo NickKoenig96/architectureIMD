@@ -94,8 +94,8 @@ namespace MyProject.API.Controllers
             try
             {
                 var parsedId = Guid.Parse(id);
-                var movie = await _database.GetUserById(parsedId);
-                if (movie != null)
+                var user = await _database.GetUserById(parsedId);
+                if (user != null)
                 {
                     await _database.DeleteUser(parsedId);
                     return NoContent();
