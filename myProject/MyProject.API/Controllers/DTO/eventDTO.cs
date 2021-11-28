@@ -1,8 +1,6 @@
 using System;
 using MyProject.API.Domain;
 
-
-
 namespace MyProject.API.Controllers
 {
     public class CreateEvent
@@ -39,7 +37,7 @@ namespace MyProject.API.Controllers
 
         public int eventParticpantCount { get; set; }
 
-        public Event ToEvent() => new Event { Id = this.Id, eventTitle = this.eventTitle, eventDate = this.eventDate, eventDescription = this.eventDescription, eventAge = this.eventAge, eventParticpantCount = 7 };
+        public Event ToEvent() => new Event { Id = this.Id, eventTitle = this.eventTitle, eventDate = this.eventDate, eventDescription = this.eventDescription, eventAge = this.eventAge };
 
     }
 

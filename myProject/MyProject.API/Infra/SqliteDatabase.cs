@@ -110,6 +110,7 @@ namespace MyProject.API.Infra
 
         public async Task<Enrolled> EnrollEvent(Enrolled enrolledEvent)
         {
+
             if (enrolledEvent.Id == null)
             {
                 await _context.Enrolled.AddAsync(enrolledEvent);
@@ -120,6 +121,19 @@ namespace MyProject.API.Infra
             }
             await _context.SaveChangesAsync();
             return enrolledEvent;
+        }
+
+        public async Task UnenrollEvent(Guid parsedId)
+        {
+            var user = await _context.Enrolled.FindAsync(parsedId);
+            _context.Enrolled.Remove(user);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<ReadOnlyCollection<Enrolled>> GetAllEnrolls()
+        {
+            var events = await _context.Enrolled.ToArrayAsync();
+            return Array.AsReadOnly(events);
         }
     }
 }

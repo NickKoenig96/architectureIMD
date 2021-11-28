@@ -7,6 +7,7 @@ namespace MyProject.API.Ports
 {
     public interface IDatabase
     {
+
         //events
         Task<ReadOnlyCollection<Event>> GetAllEvents();
         Task<ReadOnlyCollection<Event>> GetByAge(int eventage);
@@ -23,6 +24,10 @@ namespace MyProject.API.Ports
 
         //enroll
         Task<Enrolled> EnrollEvent(Enrolled Enrolled);
+        Task UnenrollEvent(Guid parsedId);
+        Task<ReadOnlyCollection<Enrolled>> GetAllEnrolls();
+
+
 
 
     }

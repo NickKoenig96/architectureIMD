@@ -152,24 +152,42 @@ namespace MyProject.API.Controllers
             }
         }
 
-        //werkt nog niet
+        //werkt nog niet(user nog aanpassen naar enroll en nog een get byId functie maken voor enroll)
         //unenroll user in event
         [HttpDelete("{eventTitle}/unenroll/{userId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> UnenrollEvent(string eventTitle)
+
+        public async Task<IActionResult> UnenrollEvent(string id)
         {
             try
             {
-                _logger.LogInformation($"user unenrolled");
-
-                return Ok("user unenrolled");
+                var parsedId = Guid.Parse(id);
+                var user = await _database.GetUserById(parsedId);
+                if (user != null)
+                {
+                    await _database.UnenrollEvent(parsedId);
+                    return NoContent();
+                }
+                else
+                {
+                    return NotFound();
+                }
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, $"Got an error for {nameof(UnenrollEvent)}");
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("/test")]
+        [ProducesResponseType(typeof(IEnumerable<ViewEroll>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+
+        public async Task<IActionResult> GetAllEnrolls() =>
+            Ok((await _database.GetAllEnrolls())
+                .Select(ViewEroll.FromModel).ToList());
 
     }
 
