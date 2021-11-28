@@ -24,6 +24,18 @@ namespace MyProject.API.Domain
 
     }
 
+    public class Enrolled
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+
+        public Guid? Id { get; set; }
+
+        public string eventTitle { get; set; }
+
+        public string userName { get; set; }
+
+    }
+
 
 }
 

@@ -12,6 +12,9 @@ namespace MyProject.API.Infra
         }
         public DbSet<Event> Event { get; set; }
 
+        public DbSet<Enrolled> Enrolled { get; set; }
+
+
         public DbSet<User> User { get; set; }
 
     }

@@ -72,4 +72,17 @@ namespace MyProject.API.Controllers
         };
 
     }
+
+    public class enrollEvent
+    {
+        public Guid? Id { get; set; }
+
+        public string eventTitle { get; set; }
+
+        public string userName { get; set; }
+
+        public Enrolled ToEnroll() => new Enrolled { eventTitle = this.eventTitle, userName = this.userName };
+
+
+    }
 }

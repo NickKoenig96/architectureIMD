@@ -104,5 +104,22 @@ namespace MyProject.API.Infra
             var users = await _context.User.ToArrayAsync();
             return Array.AsReadOnly(users);
         }
+
+
+
+
+        public async Task<Enrolled> EnrollEvent(Enrolled enrolledEvent)
+        {
+            if (enrolledEvent.Id == null)
+            {
+                await _context.Enrolled.AddAsync(enrolledEvent);
+            }
+            else
+            {
+                _context.Enrolled.Update(enrolledEvent);
+            }
+            await _context.SaveChangesAsync();
+            return enrolledEvent;
+        }
     }
 }

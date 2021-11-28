@@ -125,16 +125,24 @@ namespace MyProject.API.Controllers
 
         //werkt nog niet
         //enroll user in event
-        [HttpPost("{eventTitle}/enroll/{username}")]
-        [ProducesResponseType(typeof(ViewEvent), StatusCodes.Status201Created)]
+        [HttpPost("{eventTitle}/enroll/{userId}")]
+        //[ProducesResponseType(typeof(ViewEvent), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> EnrollEvent(CreateEvent Event)
+        public async Task<IActionResult> EnrollEvent(enrollEvent enrollEvent)
         {
             try
             {
-                _logger.LogInformation($"user enrolled");
-
-                return Ok("user enrolled");
+                try
+                {
+                    _logger.LogInformation("enroll event");
+                    var EnrolledEvent = enrollEvent.ToEnroll();
+                    var persistedEnroll = await _database.EnrollEvent(EnrolledEvent);
+                    return CreatedAtAction(nameof(GetById), new { id = EnrolledEvent.Id.ToString() }/*, ViewEvent.FromModel(persistedEnroll)*/);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
             }
             catch (Exception ex)
             {
@@ -144,7 +152,7 @@ namespace MyProject.API.Controllers
 
         //werkt nog niet
         //unenroll user in event
-        [HttpDelete("{eventTitle}/unenroll/{username}")]
+        [HttpDelete("{eventTitle}/unenroll/{userId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UnenrollEvent(string eventTitle)

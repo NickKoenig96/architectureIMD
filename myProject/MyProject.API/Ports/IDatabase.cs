@@ -21,5 +21,9 @@ namespace MyProject.API.Ports
         Task<User> PersistUser(User User);
         Task DeleteUser(Guid parsedId);
 
+        //enroll
+        Task<Enrolled> EnrollEvent(Enrolled Enrolled);
+
+
     }
 }
