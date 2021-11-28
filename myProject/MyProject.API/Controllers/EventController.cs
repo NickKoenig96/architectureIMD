@@ -124,9 +124,9 @@ namespace MyProject.API.Controllers
         }
 
         //werkt nog niet
-        //enroll user in event
+        //enroll user in event 
         [HttpPost("{eventTitle}/enroll/{userId}")]
-        //[ProducesResponseType(typeof(ViewEvent), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ViewEroll), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> EnrollEvent(enrollEvent enrollEvent)
         {
@@ -137,7 +137,9 @@ namespace MyProject.API.Controllers
                     _logger.LogInformation("enroll event");
                     var EnrolledEvent = enrollEvent.ToEnroll();
                     var persistedEnroll = await _database.EnrollEvent(EnrolledEvent);
-                    return CreatedAtAction(nameof(GetById), new { id = EnrolledEvent.Id.ToString() }/*, ViewEvent.FromModel(persistedEnroll)*/);
+                    // return Ok("user unenrolled");
+                    return CreatedAtAction(nameof(GetById), new { id = EnrolledEvent.Id.ToString() }, ViewEroll.FromModel(persistedEnroll));
+
                 }
                 catch (Exception ex)
                 {

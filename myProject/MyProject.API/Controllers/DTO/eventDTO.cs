@@ -85,4 +85,21 @@ namespace MyProject.API.Controllers
 
 
     }
+
+    public class ViewEroll
+    {
+
+        public string Id { get; set; }
+
+        public string eventTitle { get; set; }
+
+        public string userName { get; set; }
+        public static ViewEroll FromModel(Enrolled enroll) => new ViewEroll
+        {
+            Id = enroll.Id.ToString(),
+            eventTitle = enroll.eventTitle,
+            userName = enroll.userName,
+        };
+
+    }
 }
