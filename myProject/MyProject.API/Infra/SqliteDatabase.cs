@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MyProject.API.Domain;
 using MyProject.API.Ports;
-using Microsoft.EntityFrameworkCore;
 
 
 namespace MyProject.API.Infra
@@ -24,14 +23,6 @@ namespace MyProject.API.Infra
             _context.User.Remove(user);
             await _context.SaveChangesAsync();
         }
-
-        /*   public async Task<ReadOnlyCollection<Movie>> GetAllMovies(string titleStartsWith)
-         {
-
-             var movies = await _context.Movies.Where(x => EF.Functions.Like(x.Title, $"{titleStartsWith}%")).ToArrayAsync();
-             return Array.AsReadOnly(movies);
-         }*/
-
 
         public async Task<ReadOnlyCollection<Event>> GetAllEvents()
         {

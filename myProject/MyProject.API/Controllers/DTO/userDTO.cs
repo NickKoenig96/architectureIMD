@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using MyProject.API.Domain;
 
 
@@ -15,7 +14,6 @@ namespace MyProject.API.Controllers
         public DateTime userBirthdate { get; set; }
 
         public User ToUser() => new User { userName = this.userName, userBirthdate = this.userBirthdate, userEmail = this.userEmail };
-
 
     }
 
@@ -37,8 +35,6 @@ namespace MyProject.API.Controllers
             userEmail = User.userEmail,
             userBirthdate = User.userBirthdate
         };
-
-
 
     }
 }

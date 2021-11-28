@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -8,9 +7,6 @@ using System.Collections.Generic;
 using MyProject.API.Domain;
 using System.Threading.Tasks;
 using MyProject.API.Ports;
-using Microsoft.EntityFrameworkCore;
-
-
 
 namespace MyProject.API.Controllers
 {
@@ -30,7 +26,6 @@ namespace MyProject.API.Controllers
             _logger = logger;
         }
 
-
         // get all events
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<ViewEvent>), StatusCodes.Status200OK)]
@@ -40,8 +35,7 @@ namespace MyProject.API.Controllers
             Ok((await _database.GetAllEvents())
                 .Select(ViewEvent.FromModel).ToList());
 
-
-        //get events by age
+        //get events by max age
         [HttpGet("/age/{eventage}")]
         [ProducesResponseType(typeof(IEnumerable<ViewEvent>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -50,11 +44,10 @@ namespace MyProject.API.Controllers
         {
             try
             {
-                var Event = await _database.GetByAge(eventage);
-                if (Event != null)
+                var eventAge = await _database.GetByAge(eventage);
+                if (eventAge != null)
                 {
-                    return Ok(Event);
-                    //return Ok(ViewEvent.FromModel(Event));
+                    return Ok(eventAge);
 
                 }
                 else
@@ -67,7 +60,6 @@ namespace MyProject.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
 
         //get user by id
         [HttpGet("{id}")]
@@ -77,10 +69,10 @@ namespace MyProject.API.Controllers
         {
             try
             {
-                var Event = await _database.GetEventById(Guid.Parse(id));
-                if (Event != null)
+                var eventId = await _database.GetEventById(Guid.Parse(id));
+                if (eventId != null)
                 {
-                    return Ok(ViewEvent.FromModel(Event));
+                    return Ok(ViewEvent.FromModel(eventId));
                 }
                 else
                 {
@@ -89,23 +81,19 @@ namespace MyProject.API.Controllers
             }
             catch (Exception ex)
             {
-                // This is just good practice; you never want to expose a raw exception message. There are some libraries/services to handle this
-                // but it's better to take full control of your code.
                 return BadRequest(ex.Message);
             }
         }
-
-
 
         //edit and event
         [HttpPut()]
         [ProducesResponseType(typeof(ViewEvent), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Event>> UpdateEvent(UpdateEvent Event)
+        public async Task<ActionResult<Event>> UpdateEvent(UpdateEvent editEvent)
         {
             try
             {
-                var createdEvent = Event.ToEvent();
+                var createdEvent = editEvent.ToEvent();
                 var persistedEvent = await _database.UpdateEvent(createdEvent);
                 return CreatedAtAction(nameof(GetById), new { id = createdEvent.Id.ToString() }, ViewEvent.FromModel(persistedEvent));
             }
@@ -116,22 +104,16 @@ namespace MyProject.API.Controllers
             }
         }
 
-
-
-
-
-
-
         //create event
         [HttpPost("/create/event")]
         [ProducesResponseType(typeof(ViewEvent), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> PersistEvent(CreateEvent Event)
+        public async Task<IActionResult> PersistEvent(CreateEvent postEvent)
         {
             try
             {
-                _logger.LogInformation($"Cool, creating a new event");
-                var createdEvent = Event.ToEvent();
+                _logger.LogInformation("new event created");
+                var createdEvent = postEvent.ToEvent();
                 var persistedEvent = await _database.PersistEvent(createdEvent);
                 return CreatedAtAction(nameof(GetById), new { id = createdEvent.Id.ToString() }, ViewEvent.FromModel(persistedEvent));
             }
@@ -140,7 +122,6 @@ namespace MyProject.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
 
         //werkt nog niet
         //enroll user in event
@@ -161,7 +142,6 @@ namespace MyProject.API.Controllers
             }
         }
 
-
         //werkt nog niet
         //unenroll user in event
         [HttpDelete("{eventTitle}/unenroll/{username}")]
@@ -181,14 +161,7 @@ namespace MyProject.API.Controllers
             }
         }
 
-
-
-
     }
-
-
-
-
 
 }
 

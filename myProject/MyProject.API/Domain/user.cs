@@ -1,6 +1,5 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
 
 
@@ -17,8 +16,6 @@ namespace MyProject.API.Domain
         public string userEmail { get; set; }
 
         public DateTime userBirthdate { get; set; }
-
-
 
     }
 

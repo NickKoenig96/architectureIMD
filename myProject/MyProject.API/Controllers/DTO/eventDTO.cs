@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using MyProject.API.Domain;
 
 
@@ -17,15 +16,10 @@ namespace MyProject.API.Controllers
 
         public int eventAge { get; set; }
 
-        public string eventParctipants { get; set; }
 
         public int eventParticpantCount { get; set; }
 
-
-
-        //public Event ToEvent() => new Event(Guid.NewGuid(), eventTitle, eventDate, eventDescription, eventAge, eventParticpants);
-
-        public Event ToEvent() => new Event { eventTitle = this.eventTitle, eventDate = this.eventDate, eventDescription = this.eventDescription, eventAge = this.eventAge, eventParticipants = this.eventParctipants, eventParticpantCount = 7 };
+        public Event ToEvent() => new Event { eventTitle = this.eventTitle, eventDate = this.eventDate, eventDescription = this.eventDescription, eventAge = this.eventAge, eventParticpantCount = 7 };
 
     }
 
@@ -43,14 +37,9 @@ namespace MyProject.API.Controllers
 
         public int eventAge { get; set; }
 
-        public string eventParctipants { get; set; }
-
         public int eventParticpantCount { get; set; }
 
-
-
-
-        public Event ToEvent() => new Event { Id = this.Id, eventTitle = this.eventTitle, eventDate = this.eventDate, eventDescription = this.eventDescription, eventAge = this.eventAge, eventParticipants = this.eventParctipants, eventParticpantCount = 7 };
+        public Event ToEvent() => new Event { Id = this.Id, eventTitle = this.eventTitle, eventDate = this.eventDate, eventDescription = this.eventDescription, eventAge = this.eventAge, eventParticpantCount = 7 };
 
     }
 
@@ -78,12 +67,9 @@ namespace MyProject.API.Controllers
             eventTitle = Event.eventTitle,
             eventDate = Event.eventDate,
             eventDescription = Event.eventDescription,
-            // eventParticpants = "test1,test2",
             eventParticpantCount = 100,
             eventAge = Event.eventAge
         };
-
-
 
     }
 }

@@ -39,7 +39,7 @@ namespace MyProject.Tests.UnitTests
             // arrange
             // this is our happy flow: we ask for the id of an existing application
             var ourId = Guid.NewGuid();
-            var ourEvent = new Event { Id = ourId, eventTitle = "yes", eventDate = DateTime.Now, eventDescription = "event description 1", eventAge = 16, eventParticipants = "jef,jan,...", eventParticpantCount = 7 };
+            var ourEvent = new Event { Id = ourId, eventTitle = "yes", eventDate = DateTime.Now, eventDescription = "event description 1", eventAge = 16, eventParticpantCount = 7 };
             // set up the mock so that when we call the 'GetMovieById' method we return a predefined task
             // No database calls are happening here.
             _mockedDatabase.Setup(x => x.GetEventById(ourId)).Returns(Task.FromResult(ourEvent));
@@ -73,7 +73,7 @@ namespace MyProject.Tests.UnitTests
         {
             // arrange
             var ourId = Guid.NewGuid();
-            var ourEvent = new Event { Id = ourId, eventTitle = "yes", eventDate = DateTime.Now, eventDescription = "event description 1", eventAge = 16, eventParticipants = "jef,jan,...", eventParticpantCount = 7 };
+            var ourEvent = new Event { Id = ourId, eventTitle = "yes", eventDate = DateTime.Now, eventDescription = "event description 1", eventAge = 16, eventParticpantCount = 7 };
             _mockedDatabase.Setup(x => x.GetEventById(ourId)).Returns(Task.FromResult(null as Event));
 
             // act
@@ -92,7 +92,7 @@ namespace MyProject.Tests.UnitTests
         {
             // arrange
             var ourId = Guid.NewGuid();
-            var ourEvent = new Event { Id = ourId, eventTitle = "yees", eventDate = DateTime.Now, eventDescription = "event description 1", eventAge = 16, eventParticipants = "jef,jan,...", eventParticpantCount = 7 };
+            var ourEvent = new Event { Id = ourId, eventTitle = "yees", eventDate = DateTime.Now, eventDescription = "event description 1", eventAge = 16, eventParticpantCount = 7 };
             _mockedDatabase.Setup(x => x.GetEventById(ourId)).ThrowsAsync(new Exception("drama"));
 
             // act

@@ -1,15 +1,12 @@
 using System;
-using System.Globalization;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
-using MyProject.API.Domain;
 using System.Threading.Tasks;
 using MyProject.API.Ports;
-
-
+using MyProject.API.Domain;
 
 namespace MyProject.API.Controllers
 {
@@ -48,10 +45,10 @@ namespace MyProject.API.Controllers
         {
             try
             {
-                var User = await _database.GetUserById(Guid.Parse(id));
-                if (User != null)
+                var user = await _database.GetUserById(Guid.Parse(id));
+                if (user != null)
                 {
-                    return Ok(User);
+                    return Ok(user);
                 }
                 else
                 {
@@ -64,17 +61,16 @@ namespace MyProject.API.Controllers
             }
         }
 
-
         //register user
         [HttpPost("/create/user")]
         [ProducesResponseType(typeof(ViewUser), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> PersistUser(CreateUser User)
+        public async Task<IActionResult> PersistUser(CreateUser user)
         {
             try
             {
-                _logger.LogInformation($"Cool, creating a new user");
-                var createdUser = User.ToUser();
+                _logger.LogInformation("new user created");
+                var createdUser = user.ToUser();
                 var persistedUser = await _database.PersistUser(createdUser);
                 return CreatedAtAction(nameof(GetUserById), new { id = createdUser.Id.ToString() }, ViewUser.FromModel(persistedUser));
             }
@@ -83,7 +79,6 @@ namespace MyProject.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
 
         //delete user
         [HttpDelete("{id}")]
@@ -111,8 +106,6 @@ namespace MyProject.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-
 
     }
 }
