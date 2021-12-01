@@ -124,7 +124,7 @@ namespace MyProject.API.Controllers
         }
 
         //get enroll by id
-        [HttpGet("enroll/{id}")]
+        [HttpGet("{enrollId}")]
         [ProducesResponseType(typeof(ViewEroll), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetEnrollById(string id)
@@ -175,6 +175,30 @@ namespace MyProject.API.Controllers
             }
         }
 
+        /* public async Task<IActionResult> EnrollEvent2(addEnroll addEnroll)
+         {
+             try
+             {
+                 try
+                 {
+                     var addedEnroll = addEnroll.ToAddEnroll();
+                     var persistedEnroll2 = await _database.EnrollEvent2(addedEnroll);
+                     // return Ok("user unenrolled");
+                     return Ok("event id added");
+
+                 }
+                 catch (Exception ex)
+                 {
+                     return BadRequest(ex.Message);
+                 }
+             }
+             catch (Exception ex)
+             {
+                 return BadRequest(ex.Message);
+             }
+         }*/
+
+
         //werkt nog niet(user nog aanpassen naar enroll en nog een get byId functie maken voor enroll)
         //unenroll user in event
         [HttpDelete("{eventTitle}/unenroll/{userId}")]
@@ -204,7 +228,7 @@ namespace MyProject.API.Controllers
             }
         }
 
-        [HttpGet("/test")]
+        [HttpGet("enrolls")]
         [ProducesResponseType(typeof(IEnumerable<ViewEroll>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
 

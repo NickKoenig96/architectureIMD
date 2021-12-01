@@ -20,6 +20,8 @@ namespace MyProject.API.Domain
 
         public int eventAge { get; set; }
 
+        public string eventEnrolled { get; set; }
+
         public int eventParticpantCount { get; set; }
 
     }

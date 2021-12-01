@@ -27,9 +27,7 @@ namespace MyProject.API.Ports
         Task UnenrollEvent(Guid parsedId);
         Task<ReadOnlyCollection<Enrolled>> GetAllEnrolls();
         Task<Enrolled> GetEnrollById(Guid id);
-
-
-
+        Task<Event> EnrollEvent2(Event addEnroll);
 
 
     }

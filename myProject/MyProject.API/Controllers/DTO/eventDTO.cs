@@ -84,6 +84,15 @@ namespace MyProject.API.Controllers
 
     }
 
+    public class addEnroll
+    {
+        public Guid? Id { get; set; }
+        public string eventEnrolled { get; set; }
+
+        public Event ToAddEnroll() => new Event { Id = this.Id, eventEnrolled = this.eventEnrolled };
+
+    }
+
     public class ViewEroll
     {
 

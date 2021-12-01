@@ -140,5 +140,20 @@ namespace MyProject.API.Infra
         {
             return await _context.Enrolled.FindAsync(id);
         }
+
+
+        public async Task<Event> EnrollEvent2(Event addEnroll)
+        {
+            if (addEnroll.Id == null)
+            {
+                await _context.Event.AddAsync(addEnroll);
+            }
+            else
+            {
+                _context.Event.Update(addEnroll);
+            }
+            await _context.SaveChangesAsync();
+            return addEnroll;
+        }
     }
 }
