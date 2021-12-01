@@ -135,5 +135,10 @@ namespace MyProject.API.Infra
             var events = await _context.Enrolled.ToArrayAsync();
             return Array.AsReadOnly(events);
         }
+
+        public async Task<Enrolled> GetEnrollById(Guid id)
+        {
+            return await _context.Enrolled.FindAsync(id);
+        }
     }
 }

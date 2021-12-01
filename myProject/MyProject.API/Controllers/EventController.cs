@@ -123,7 +123,30 @@ namespace MyProject.API.Controllers
             }
         }
 
-        //werkt nog niet
+        //get enroll by id
+        [HttpGet("enroll/{id}")]
+        [ProducesResponseType(typeof(ViewEroll), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetEnrollById(string id)
+        {
+            try
+            {
+                var enrollId = await _database.GetEnrollById(Guid.Parse(id));
+                if (enrollId != null)
+                {
+                    return Ok(ViewEroll.FromModel(enrollId));
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         //enroll user in event 
         [HttpPost("{eventTitle}/enroll/{userId}")]
         [ProducesResponseType(typeof(ViewEroll), StatusCodes.Status201Created)]
@@ -163,8 +186,8 @@ namespace MyProject.API.Controllers
             try
             {
                 var parsedId = Guid.Parse(id);
-                var user = await _database.GetUserById(parsedId);
-                if (user != null)
+                var enroll = await _database.GetEnrollById(parsedId);
+                if (enroll != null)
                 {
                     await _database.UnenrollEvent(parsedId);
                     return NoContent();
