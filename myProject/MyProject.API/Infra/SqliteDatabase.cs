@@ -30,12 +30,10 @@ namespace MyProject.API.Infra
             return Array.AsReadOnly(events);
         }
 
-
-
-        public async Task<ReadOnlyCollection<Event>> GetByAge(int eventage)
+        public async Task<Event[]> GetByAge(int eventage)
         {
             var events = await _context.Event.Where(x => x.eventAge == eventage).ToArrayAsync();
-            return Array.AsReadOnly(events);
+            return events;
 
         }
 

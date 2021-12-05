@@ -10,7 +10,7 @@ namespace MyProject.API.Ports
 
         //events
         Task<ReadOnlyCollection<Event>> GetAllEvents();
-        Task<ReadOnlyCollection<Event>> GetByAge(int eventage);
+        Task<Event[]> GetByAge(int eventage);
         Task<Event> GetEventById(Guid id);
         Task<Event> GetEvent(Guid id);
         Task<Event> PersistEvent(Event Event);
