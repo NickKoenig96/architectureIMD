@@ -27,7 +27,7 @@ namespace MyProject.Tests.UnitTests
         {
 
             var ourId = Guid.NewGuid();
-            var ourEvent = new Event { Id = ourId, eventTitle = "yes", eventDate = DateTime.Now, eventDescription = "event description 1", eventAge = 16, eventParticpantCount = 7 };
+            var ourEvent = new Event { Id = ourId, eventTitle = "yes", eventDate = DateTime.Now, eventDescription = "event description 1", eventAge = 16, eventParticpantCount = 100 };
 
             _mockedDatabase.Setup(x => x.GetEventById(ourId)).Returns(Task.FromResult(ourEvent));
 
@@ -77,5 +77,160 @@ namespace MyProject.Tests.UnitTests
             _mockedLogger.VerifyAll();
             _mockedDatabase.VerifyAll();
         }
+
+
+
+
+
+
+
+
+
+
+        //Get all events by age
+        [Fact]
+        public async Task GetByAge()
+        {
+
+            var age = 22;
+
+            var events = new Event
+            {
+                Id = Guid.NewGuid(),
+                eventTitle = "event test",
+                eventDate = DateTime.Now,
+                eventDescription = "event description",
+                eventParticpantCount = 100,
+                eventAge = 22
+            };
+
+
+            _mockedDatabase.Setup(x => x.GetByAge(age));
+
+            var controller = new EventsController(_mockedLogger.Object, _mockedDatabase.Object);
+            var actualResult = await controller.GetByAge(age) as OkObjectResult;
+
+            Assert.Equal(200, actualResult.StatusCode);
+
+            _mockedLogger.VerifyAll();
+            _mockedDatabase.VerifyAll();
+        }
+
+
+        //Get all events by age
+        [Fact]
+        public async Task GetByAge__DoesntExist()
+        {
+
+            var age = 22;
+
+            var events = new Event
+            {
+                Id = Guid.NewGuid(),
+                eventTitle = "event test",
+                eventDate = DateTime.Now,
+                eventDescription = "event description",
+                eventParticpantCount = 100,
+                eventAge = 22
+            };
+
+
+            _mockedDatabase.Setup(x => x.GetByAge(age)).Returns(Task.FromResult(null as Event[])); ; ;
+
+            var controller = new EventsController(_mockedLogger.Object, _mockedDatabase.Object);
+
+            var result = await new EventsController(_mockedLogger.Object, _mockedDatabase.Object).GetByAge(age);
+
+            Assert.IsType<NotFoundResult>(result);
+
+            _mockedLogger.VerifyAll();
+            _mockedDatabase.VerifyAll();
+        }
+
+
+        //Get all events by age
+        [Fact]
+        public async Task GetByAge__ErrorOnRetrievalAsync()
+        {
+
+            var age = 22;
+
+            var events = new Event
+            {
+                Id = Guid.NewGuid(),
+                eventTitle = "event test",
+                eventDate = DateTime.Now,
+                eventDescription = "event description",
+                eventParticpantCount = 100,
+                eventAge = 22
+            };
+
+
+            _mockedDatabase.Setup(x => x.GetByAge(age)).ThrowsAsync(new Exception("it doesn't work :("));
+
+            var controller = new EventsController(_mockedLogger.Object, _mockedDatabase.Object);
+
+            var result = await new EventsController(_mockedLogger.Object, _mockedDatabase.Object).GetByAge(age);
+
+            Assert.IsType<BadRequestObjectResult>(result);
+
+            _mockedLogger.VerifyAll();
+            _mockedDatabase.VerifyAll();
+        }
+
+
+        /* [Fact]
+         public async Task getAllEvents()
+         {
+
+             var events = new Event
+             {
+                 Id = Guid.NewGuid(),
+                 eventTitle = "event test",
+                 eventDate = DateTime.Now,
+                 eventDescription = "event description",
+                 eventParticpantCount = 100,
+                 eventAge = 22
+             };
+
+             _mockedDatabase.Setup(x => x.GetAllEvents());
+
+             var controller = new EventsController(_mockedLogger.Object, _mockedDatabase.Object);
+             var actualResult = await controller.GetAllEvents() as OkObjectResult;
+
+             //Assert.Equal(200, actualResult.StatusCode);
+
+             _mockedLogger.VerifyAll();
+             _mockedDatabase.VerifyAll();
+         }*/
+
+        /*[Fact]
+        public async Task persistEvent()
+        {
+
+
+
+            var events = new Event
+            {
+                eventTitle = "event test",
+                eventDate = DateTime.Now,
+                eventDescription = "event description",
+                eventParticpantCount = 100,
+                eventAge = 22
+            };
+
+
+            _mockedDatabase.Setup(x => x.PersistEvent(events));
+
+            var controller = new EventsController(_mockedLogger.Object, _mockedDatabase.Object);
+            var actualResult = await controller.PersistEvent(events) as OkObjectResult;
+
+            Assert.Equal(200, actualResult.StatusCode);
+
+            _mockedLogger.VerifyAll();
+            _mockedDatabase.VerifyAll();
+        }*/
+
+
     }
 }
