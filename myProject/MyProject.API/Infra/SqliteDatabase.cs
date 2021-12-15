@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using MyProject.API.Domain;
 using MyProject.API.Ports;
 
-
 namespace MyProject.API.Infra
 {
     public class SqliteDatabase : IDatabase
@@ -17,6 +16,7 @@ namespace MyProject.API.Infra
         {
             _context = context;
         }
+
         public async Task DeleteUser(Guid parsedId)
         {
             var user = await _context.User.FindAsync(parsedId);
@@ -37,7 +37,6 @@ namespace MyProject.API.Infra
 
         }
 
-
         public async Task<Event> GetEventById(Guid id)
         {
             return await _context.Event.FindAsync(id);
@@ -52,7 +51,6 @@ namespace MyProject.API.Infra
         {
             return await _context.User.FindAsync(id);
         }
-
 
         public async Task<Event> PersistEvent(Event Event)
         {
@@ -70,7 +68,6 @@ namespace MyProject.API.Infra
 
         public async Task<Event> UpdateEvent(Event Event)
         {
-
             if (Event.Id == null)
             {
                 await _context.Event.AddAsync(Event);
@@ -103,12 +100,8 @@ namespace MyProject.API.Infra
             return Array.AsReadOnly(users);
         }
 
-
-
-
         public async Task<Enrolled> EnrollEvent(Enrolled enrolledEvent)
         {
-
             if (enrolledEvent.Id == null)
             {
                 await _context.Enrolled.AddAsync(enrolledEvent);
@@ -138,7 +131,6 @@ namespace MyProject.API.Infra
         {
             return await _context.Enrolled.FindAsync(id);
         }
-
 
         public async Task<Event> EnrollEvent2(Event addEnroll)
         {

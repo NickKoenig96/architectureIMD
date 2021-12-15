@@ -5,7 +5,6 @@ namespace MyProject.API.Controllers
 {
     public class CreateEvent
     {
-
         public string eventTitle { get; set; }
 
         public DateTime eventDate { get; set; }
@@ -18,13 +17,11 @@ namespace MyProject.API.Controllers
         public int eventParticpantCount { get; set; }
 
         public Event ToEvent() => new Event { eventTitle = this.eventTitle, eventDate = this.eventDate, eventDescription = this.eventDescription, eventAge = this.eventAge, eventParticpantCount = 7 };
-
     }
 
 
     public class UpdateEvent
     {
-
         public Guid? Id { get; set; }
 
         public string eventTitle { get; set; }
@@ -38,12 +35,11 @@ namespace MyProject.API.Controllers
         public int eventParticpantCount { get; set; }
 
         public Event ToEvent() => new Event { Id = this.Id, eventTitle = this.eventTitle, eventDate = this.eventDate, eventDescription = this.eventDescription, eventAge = this.eventAge };
-
     }
+
 
     public class ViewEvent
     {
-
         public string Id { get; set; }
 
         public string eventTitle { get; set; }
@@ -56,7 +52,6 @@ namespace MyProject.API.Controllers
 
         public int eventParticpantCount { get; set; }
 
-
         public string eventParticpants { get; set; }
 
         public static ViewEvent FromModel(Event Event) => new ViewEvent
@@ -68,8 +63,8 @@ namespace MyProject.API.Controllers
             eventParticpantCount = 100,
             eventAge = Event.eventAge
         };
-
     }
+
 
     public class enrollEvent
     {
@@ -80,9 +75,8 @@ namespace MyProject.API.Controllers
         public string userName { get; set; }
 
         public Enrolled ToEnroll() => new Enrolled { eventTitle = this.eventTitle, userName = this.userName };
-
-
     }
+
 
     public class addEnroll
     {
@@ -90,12 +84,11 @@ namespace MyProject.API.Controllers
         public string eventEnrolled { get; set; }
 
         public Event ToAddEnroll() => new Event { Id = this.Id, eventEnrolled = this.eventEnrolled };
-
     }
+
 
     public class ViewEroll
     {
-
         public string Id { get; set; }
 
         public string eventTitle { get; set; }
@@ -107,6 +100,5 @@ namespace MyProject.API.Controllers
             eventTitle = enroll.eventTitle,
             userName = enroll.userName,
         };
-
     }
 }

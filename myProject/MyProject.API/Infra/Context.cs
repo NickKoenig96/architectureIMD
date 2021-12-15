@@ -14,11 +14,7 @@ namespace MyProject.API.Infra
 
         public DbSet<Enrolled> Enrolled { get; set; }
 
-
         public DbSet<User> User { get; set; }
 
     }
 }
-
-
-

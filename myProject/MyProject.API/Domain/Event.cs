@@ -2,8 +2,6 @@ using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-
-
 namespace MyProject.API.Domain
 {
     public class Event
@@ -35,9 +33,5 @@ namespace MyProject.API.Domain
         public string eventTitle { get; set; }
 
         public string userName { get; set; }
-
     }
-
-
 }
-

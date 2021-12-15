@@ -18,13 +18,11 @@ namespace MyProject.API.Controllers
 
         private readonly ILogger<UserController> _logger;
 
-
         public UserController(ILogger<UserController> logger, IDatabase database)
         {
             _database = database;
             _logger = logger;
         }
-
 
         //get participants
         [HttpGet]
@@ -34,7 +32,6 @@ namespace MyProject.API.Controllers
         public async Task<IActionResult> Get() =>
            Ok((await _database.GetAllUsers())
                .Select(ViewUser.FromModel).ToList());
-
 
         //get user by id
         [HttpGet("{id}")]
@@ -106,9 +103,5 @@ namespace MyProject.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
     }
 }
-
-
-

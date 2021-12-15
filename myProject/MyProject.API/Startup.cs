@@ -15,7 +15,6 @@ using Microsoft.EntityFrameworkCore;
 using MyProject.API.Infra;
 using MyProject.API.Ports;
 
-
 namespace MyProject.API
 {
     public class Startup
@@ -30,7 +29,6 @@ namespace MyProject.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddDbContext<EventContext>(options =>
                                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddTransient<IDatabase, SqliteDatabase>();

@@ -14,11 +14,9 @@ namespace MyProject.API.Controllers
     [Route("events")]
     public class EventsController : ControllerBase
     {
-
         private readonly IDatabase _database;
 
         private readonly ILogger<EventsController> _logger;
-
 
         public EventsController(ILogger<EventsController> logger, IDatabase database)
         {
@@ -30,7 +28,6 @@ namespace MyProject.API.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<ViewEvent>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-
         public async Task<IActionResult> GetAllEvents() =>
             Ok((await _database.GetAllEvents())
                 .Select(ViewEvent.FromModel).ToList());
@@ -39,7 +36,6 @@ namespace MyProject.API.Controllers
         [HttpGet("/age/{eventage}")]
         [ProducesResponseType(typeof(IEnumerable<ViewEvent>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-
         public async Task<IActionResult> GetByAge(int eventage)
         {
             try
@@ -175,36 +171,10 @@ namespace MyProject.API.Controllers
             }
         }
 
-        /* public async Task<IActionResult> EnrollEvent2(addEnroll addEnroll)
-         {
-             try
-             {
-                 try
-                 {
-                     var addedEnroll = addEnroll.ToAddEnroll();
-                     var persistedEnroll2 = await _database.EnrollEvent2(addedEnroll);
-                     // return Ok("user unenrolled");
-                     return Ok("event id added");
-
-                 }
-                 catch (Exception ex)
-                 {
-                     return BadRequest(ex.Message);
-                 }
-             }
-             catch (Exception ex)
-             {
-                 return BadRequest(ex.Message);
-             }
-         }*/
-
-
-        //werkt nog niet(user nog aanpassen naar enroll en nog een get byId functie maken voor enroll)
         //unenroll user in event
         [HttpDelete("{eventTitle}/unenroll/{userId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-
         public async Task<IActionResult> UnenrollEvent(string id)
         {
             try
@@ -231,16 +201,8 @@ namespace MyProject.API.Controllers
         [HttpGet("enrolls")]
         [ProducesResponseType(typeof(IEnumerable<ViewEroll>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-
         public async Task<IActionResult> GetAllEnrolls() =>
             Ok((await _database.GetAllEnrolls())
                 .Select(ViewEroll.FromModel).ToList());
-
     }
-
 }
-
-
-
-
-

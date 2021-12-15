@@ -1,8 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-
-
 namespace MyProject.API.Domain
 {
     public class User
@@ -16,10 +14,5 @@ namespace MyProject.API.Domain
         public string userEmail { get; set; }
 
         public DateTime userBirthdate { get; set; }
-
     }
-
-
-
-
 }
