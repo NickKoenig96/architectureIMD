@@ -183,7 +183,8 @@ namespace MyProject.Tests.UnitTests
          public async Task getAllEvents()
          {
 
-             var events = new Event
+             var return = new[] {
+             new Event
              {
                  Id = Guid.NewGuid(),
                  eventTitle = "event test",
@@ -193,7 +194,7 @@ namespace MyProject.Tests.UnitTests
                  eventAge = 22
              };
 
-             _mockedDatabase.Setup(x => x.GetAllEvents());
+             _mockedDatabase.Setup(x => x.GetAllEvents(events));
 
              var controller = new EventsController(_mockedLogger.Object, _mockedDatabase.Object);
              var actualResult = await controller.GetAllEvents() as OkObjectResult;
@@ -202,34 +203,35 @@ namespace MyProject.Tests.UnitTests
 
              _mockedLogger.VerifyAll();
              _mockedDatabase.VerifyAll();
-         }*/
+         }
+     }
 
-        /*[Fact]
-        public async Task persistEvent()
-        {
-
-
-
-            var events = new Event
-            {
-                eventTitle = "event test",
-                eventDate = DateTime.Now,
-                eventDescription = "event description",
-                eventParticpantCount = 100,
-                eventAge = 22
-            };
+     /*[Fact]
+     public async Task persistEvent()
+     {
 
 
-            _mockedDatabase.Setup(x => x.PersistEvent(events));
 
-            var controller = new EventsController(_mockedLogger.Object, _mockedDatabase.Object);
-            var actualResult = await controller.PersistEvent(events) as OkObjectResult;
+         var events = new Event
+         {
+             eventTitle = "event test",
+             eventDate = DateTime.Now,
+             eventDescription = "event description",
+             eventParticpantCount = 100,
+             eventAge = 22
+         };
 
-            Assert.Equal(200, actualResult.StatusCode);
 
-            _mockedLogger.VerifyAll();
-            _mockedDatabase.VerifyAll();
-        }*/
+         _mockedDatabase.Setup(x => x.PersistEvent(events));
+
+         var controller = new EventsController(_mockedLogger.Object, _mockedDatabase.Object);
+         var actualResult = await controller.PersistEvent(events) as OkObjectResult;
+
+         Assert.Equal(200, actualResult.StatusCode);
+
+         _mockedLogger.VerifyAll();
+         _mockedDatabase.VerifyAll();
+     }*/
 
 
     }
