@@ -57,7 +57,7 @@ namespace MyProject.API.Controllers
             }
         }
 
-        //get event by id
+        //get user by id
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ViewEvent), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -120,7 +120,7 @@ namespace MyProject.API.Controllers
         }
 
         //get enroll by id
-        [HttpGet("{enrollId}")]
+        [HttpGet("/test{enrollId}")]
         [ProducesResponseType(typeof(ViewEroll), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetEnrollById(string id)
