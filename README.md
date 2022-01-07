@@ -16,21 +16,13 @@ We are responsible for the creation, and later maintenance of the **API** of a g
 **Run tests :**
 1.  clone/download the code
 2.  open a terminal
-3.  `dotnet test`  in the  `api.test`  folder
+3.  `dotnet test`  in the root  folder
 4.  check the testrunner in the terminal.
 
 
-## Todo
+**Not in Project :**
 
-**Project :**
-
- 1. On overview page show event description (first 1000 characters) → **detail to fix later**
- 2. The user gets a button to enroll for the event when he/she is not enrolled yet. After he/she is enrolled, the button changes to a cancel button. → **Need to figure out how to use foreign keys**
- 3.  On overview page show event paticipation count → **Need working foreign keys for this**
- 4. When the age range is not filled in, it's an all-ages event and everyone sees the event in their list. → **detail to fix later**
+ 1. On overview page show only first 1000 characters event description 
+ 2. On overview page show event paticipation count
+ 3. More tests required
  
-**Question:** An administrator can remove a person from an event = After he/she is enrolled, the button changes to a cancel button? (same route?)
-
-**Tests:**
-
- 1. write own tests for our api routes → **don't know how to do this**

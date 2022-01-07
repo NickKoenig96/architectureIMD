@@ -57,7 +57,7 @@ namespace MyProject.API.Controllers
             }
         }
 
-        //get user by id
+        //get event by id
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ViewEvent), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
